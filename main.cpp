@@ -13,9 +13,9 @@ public:
     double hoursWorked{}; //how many hours the employee worked
     double rateOfPay{}; //the rate of pay for the employee
     double overTimeHours{}; //how many overtime hours the employee worked
-    double* pHoursWorked = &hoursWorked;
-    double* pRateOfPay = &rateOfPay;
-    double* pOvertimeHours = &overTimeHours;
+    double* pHoursWorked = new double;
+    double* pRateOfPay = new double;
+    double* pOvertimeHours = new double;
 
     Employee(string name, double hours, double rate, double OT){ //parameterized constructor. this class requires four parameters on object creation.
         employeeName = std::move(name); //Clang-Tidy: Parameter 'name' is passed by value and only copied once; consider moving it to avoid unnecessary copies
@@ -82,7 +82,7 @@ void PrintEmployeeArray(Employee array[], int size){ //format the fields of each
 int main() { //main method
     int n;
     cout << "Enter number of employees:";
-    cin >> n; //set n to user input.
+    cin >> n; //set n to user input. this will hold the size of the array
     Employee employees[n]; //create an array of employees of size n
 
     enterData(employees, n); //call enterData function which calls getData function.
@@ -96,6 +96,11 @@ int main() { //main method
 
     PrintEmployeeArray(employees, n); // call PrintEmployeeArray Function
 
-
+    //delete all the pointers for each element in employees array.
+    for(int i = 0; i < n; i++) {
+        delete employees[i].pHoursWorked;
+        delete employees[i].pOvertimeHours;
+        delete employees[i].pRateOfPay;
+    }
 }
 
